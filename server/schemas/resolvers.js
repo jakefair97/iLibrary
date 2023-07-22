@@ -23,7 +23,7 @@ const resolvers = {
   Mutation: {
     addUser: async (parent, { username, email, password }) => {
       const user = await User.create({ username, email, password });
-      const token = signToken(profile);
+      const token = signToken(user);
 
       return { token, user };
     },
@@ -63,7 +63,7 @@ const resolvers = {
       throw new AuthenticationError('You need to be logged in!');
     },
     // Set up mutation so a logged in user can only remove their profile and no one else's
-    removeProfile: async (parent, args, context) => {
+    removeUser: async (parent, args, context) => {
       if (context.user) {
         return User.findOneAndDelete({ _id: context.user._id });
       }

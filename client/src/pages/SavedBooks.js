@@ -1,11 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Container,
-  Card,
-  Button,
-  Row,
-  Col
-} from 'react-bootstrap';
+import React from 'react';
+import { Container, Card, Button, Row, Col } from 'react-bootstrap';
+
 import { useQuery, useMutation} from '@apollo/client';
 
 import { GET_ME } from '../utils/queries';
@@ -17,9 +12,12 @@ const SavedBooks = () => {
   // const [userData, setUserData] = useState({});
 
   // use this to determine if `useEffect()` hook needs to run again
+  
+  const userData = useQuery(GET_ME);
+  
   const userDataLength = Object.keys(userData).length;
 
-  const userData = useQuery(GET_ME);
+  const [removeBook] = useMutation(REMOVE_BOOK);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -30,7 +28,9 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await useMutation(REMOVE_BOOK);
+      const response = await removeBook({
+        variables: { bookId: bookId }
+      });
 
       if (!response.ok) {
         throw new Error('something went wrong!');

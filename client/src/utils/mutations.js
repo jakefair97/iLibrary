@@ -57,7 +57,7 @@ export const REMOVE_BOOK = gql`
         bookId
         image
         link
-      
+      }
     }
   }
 `;

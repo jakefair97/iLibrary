@@ -83,8 +83,8 @@ const SearchBooks = () => {
       });
       console.log(response);
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
+      if (error) {
+        console.log(error);
       }
 
       // if book successfully saves to user's account, save book id to state

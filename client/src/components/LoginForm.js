@@ -31,9 +31,14 @@ const LoginForm = () => {
     }
 
     try {
-      const { data } = await login({
+      const { data, errors } = await login({
         variables: { ...userFormData },
       });
+
+      if (errors) {
+        console.log(errors);
+        setShowAlert(true);
+      }
 
       Auth.login(data.login.token);
     } catch (err) {
@@ -41,11 +46,6 @@ const LoginForm = () => {
       setShowAlert(true);
     }
 
-    setUserFormData({
-      username: '',
-      email: '',
-      password: '',
-    });
   };
 
   return (

@@ -13,11 +13,9 @@ const SavedBooks = () => {
 
   // use this to determine if `useEffect()` hook needs to run again
   
-  const userData = useQuery(GET_ME);
-  
-  const userDataLength = Object.keys(userData).length;
+  const { loading, data, error } = useQuery(GET_ME);
 
-  const [removeBook, { error }] = useMutation(REMOVE_BOOK, {
+  const [removeBook, { error: mutationError }] = useMutation(REMOVE_BOOK, {
     errorPolicy: 'all',
   });
 
@@ -33,10 +31,7 @@ const SavedBooks = () => {
       const response = await removeBook({
         variables: { bookId: bookId }
       });
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
+      console.log(response);
 
       const updatedUser = await response.json();
       userData(updatedUser);
@@ -47,10 +42,16 @@ const SavedBooks = () => {
     }
   };
 
-  // if data isn't here yet, say so
-  if (!userDataLength) {
-    return <h2>LOADING...</h2>;
+  if (loading) {
+    return <h2>Loading...</h2>
   }
+
+  if (error) {
+    console.error(error);
+    return <h2>Error fetching data</h2>
+  }
+
+  const userData = data.me;
 
   return (
     <>

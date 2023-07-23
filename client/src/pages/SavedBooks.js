@@ -51,6 +51,24 @@ const SavedBooks = () => {
     return <h2>Error fetching data</h2>
   }
 
+  // Check if data exists and has the required property
+  if (!data || !data.me || !data.me.savedBooks || data.me.savedBooks.length === 0) {
+    return (
+      <>
+        <div fluid className='text-light bg-dark p-5'>
+          <Container>
+            <h1>Viewing saved books!</h1>
+          </Container>
+        </div>
+        <Container>
+          <h2 className='pt-5'>
+            You have no saved books!
+          </h2>
+        </Container>
+      </>
+    );
+  }
+
   const userData = data.me;
 
   return (
